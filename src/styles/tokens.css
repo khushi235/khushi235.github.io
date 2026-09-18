@@ -1,0 +1,175 @@
+/* ============================================================================
+   DESIGN TOKENS
+   Every visual decision in this site resolves to a token declared here.
+   Change a value once and the whole site follows.
+   ========================================================================= */
+
+:root {
+  /* ---------------------------------------------------------------- colour */
+  /* Dusk substrate. Near-black with a faint green cast, never pure #000. */
+  --c-void: #060907;
+  --c-deep: #0a0e0b;
+  --c-surface: #0e1310;
+  --c-raised: #141a16;
+  --c-elevated: #1b231d;
+
+  /* Text sits on a warm-neutral white so it never looks clinical. */
+  --c-text: #e9ece7;
+  --c-text-strong: #ffffff;
+  --c-muted: #a2aa9f;
+  --c-faint: #6b7a68;
+  --c-dim: #454f42;
+
+  /* Structure */
+  --c-line: rgb(255 255 255 / 7%);
+  --c-line-strong: rgb(255 255 255 / 14%);
+  --c-glass: rgb(8 12 9 / 62%);
+
+  /* Accent 01 — meadow. Fresh grass, lit low. Used sparingly. */
+  --c-fern: #8fe3a2;
+  --c-fern-hot: #c4f5cd;
+  --c-fern-deep: #3f9d5c;
+  --c-fern-wash: rgb(143 227 162 / 12%);
+
+  /* Accent 02 — golden coat. Warm counterweight for data and metadata. */
+  --c-golden: #f2d7a3;
+  --c-golden-deep: #c79a59;
+  --c-golden-wash: rgb(242 215 163 / 10%);
+
+  /* Semantic */
+  --c-accent: var(--c-fern);
+  --c-accent-contrast: #06140b;
+  --c-focus: #c4f5cd;
+
+  /* ------------------------------------------------------------ typography */
+  --f-sans: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono',
+    'Cascadia Mono', 'Roboto Mono', Menlo, monospace;
+  /* Display face. Wider and rounder than Inter, which reads better at the sizes
+     headings actually run at. Body copy stays on Inter for readability. */
+  --f-display: 'Sora Variable', 'Sora', var(--f-sans);
+
+  /* Fluid scale, locked between a 360px and a 1600px viewport. */
+  --step--2: clamp(0.694rem, 0.68rem + 0.07vw, 0.75rem);
+  --step--1: clamp(0.833rem, 0.81rem + 0.11vw, 0.9rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.2rem, 1.14rem + 0.28vw, 1.375rem);
+  --step-2: clamp(1.44rem, 1.33rem + 0.49vw, 1.75rem);
+  --step-3: clamp(1.728rem, 1.53rem + 0.88vw, 2.25rem);
+  --step-4: clamp(2.074rem, 1.74rem + 1.48vw, 3rem);
+  --step-5: clamp(2.488rem, 1.93rem + 2.48vw, 4rem);
+  --step-6: clamp(2.986rem, 2.05rem + 4.16vw, 5.5rem);
+  /* The hero name is typed on one unbroken line, so the floor is set by what
+     fits a 320px screen rather than by taste. */
+  --step-7: clamp(2.6rem, 1.25rem + 7vw, 7.5rem);
+
+  --lh-tight: 1.02;
+  --lh-snug: 1.18;
+  --lh-normal: 1.55;
+  --lh-relaxed: 1.72;
+
+  --ls-mega: -0.045em;
+  --ls-display: -0.035em;
+  --ls-heading: -0.022em;
+  --ls-body: -0.005em;
+  --ls-label: 0.16em;
+  --ls-label-wide: 0.28em;
+
+  /* ---------------------------------------------------------------- space */
+  --sp-3xs: 0.25rem;
+  --sp-2xs: 0.5rem;
+  --sp-xs: 0.75rem;
+  --sp-s: 1rem;
+  --sp-m: 1.5rem;
+  --sp-l: 2rem;
+  --sp-xl: 3rem;
+  --sp-2xl: 4rem;
+  --sp-3xl: 6rem;
+  --sp-4xl: clamp(5rem, 3rem + 9vw, 9.5rem);
+  --sp-section: clamp(6rem, 4rem + 11vw, 12rem);
+
+  /* --------------------------------------------------------------- layout */
+  --w-page: 78rem;
+  --w-wide: 92rem;
+  --w-text: 46rem;
+  --w-narrow: 34rem;
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 3.5rem);
+  --nav-h: 4.25rem;
+
+  /* Portrait only: the band the backdrop subject occupies. The hero reserves
+     room for it and the backdrop stops scrimming below it, so the two never
+     drift apart and no horizontal edge cuts across the circle. */
+  --subject-top: 4.25rem;
+  --subject-size: min(70vw, 32svh);
+  --subject-bottom: calc(var(--subject-top) + var(--subject-size));
+
+  /* --------------------------------------------------------------- shapes */
+  --r-xs: 4px;
+  --r-s: 8px;
+  --r-m: 14px;
+  --r-l: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* --------------------------------------------------------------- depth */
+  --sh-s: 0 1px 2px rgb(0 0 0 / 40%);
+  --sh-m: 0 8px 24px -8px rgb(0 0 0 / 55%);
+  --sh-l: 0 24px 64px -24px rgb(0 0 0 / 70%);
+  --sh-glow: 0 0 40px -10px rgb(143 227 162 / 35%);
+  --sh-inset: inset 0 1px 0 0 rgb(255 255 255 / 5%);
+
+  /* --------------------------------------------------------------- motion */
+  --e-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --e-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --e-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --d-fast: 160ms;
+  --d-base: 280ms;
+  --d-slow: 560ms;
+  --d-reveal: 900ms;
+
+  /* Multiplied into every optional animation. The reduced-motion block below
+     sets it to 0, which neutralises motion without touching each rule. */
+  --motion: 1;
+
+  --z-bg: 0;
+  --z-content: 1;
+  --z-nav: 50;
+  --z-menu: 60;
+
+  /* Lets height transition to `auto` where the browser supports it. */
+  interpolate-size: allow-keywords;
+}
+
+/* Project case-study colour treatments. Applied via `data-theme` so content
+   authors pick an atmosphere without writing a line of CSS. */
+[data-theme='meadow'] {
+  --t-accent: var(--c-fern);
+  --t-accent-soft: rgb(143 227 162 / 14%);
+  --t-glow: radial-gradient(60% 70% at 78% 30%, rgb(95 200 130 / 16%), transparent 70%);
+}
+[data-theme='golden'] {
+  --t-accent: var(--c-golden);
+  --t-accent-soft: rgb(242 215 163 / 13%);
+  --t-glow: radial-gradient(60% 70% at 78% 30%, rgb(199 154 89 / 15%), transparent 70%);
+}
+[data-theme='sand'] {
+  --t-accent: #e3d2b4;
+  --t-accent-soft: rgb(227 210 180 / 12%);
+  --t-glow: radial-gradient(60% 70% at 78% 30%, rgb(190 168 128 / 13%), transparent 70%);
+}
+[data-theme='slate'] {
+  --t-accent: #bfc8bd;
+  --t-accent-soft: rgb(191 200 189 / 10%);
+  --t-glow: radial-gradient(60% 70% at 78% 30%, rgb(130 155 130 / 12%), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion: 0;
+    --d-fast: 1ms;
+    --d-base: 1ms;
+    --d-slow: 1ms;
+    --d-reveal: 1ms;
+  }
+}

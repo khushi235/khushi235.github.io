@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Khushi Shukla">
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1712" />
+      <stop offset="100%" stop-color="#060907" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#8fe3a2" stop-opacity=".30" />
+      <stop offset="100%" stop-color="#8fe3a2" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="pad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c4f5cd" />
+      <stop offset="100%" stop-color="#6fcf8c" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#field)" />
+  <rect width="64" height="64" rx="14" fill="url(#glow)" />
+  <g fill="url(#pad)" transform="translate(32 33.5) scale(1.72) translate(-15.5 -15.9)">
+    <ellipse cx="15" cy="21" rx="7.4" ry="6" />
+    <circle cx="7.4" cy="12.4" r="3.1" />
+    <circle cx="12.6" cy="8" r="3.2" />
+    <circle cx="18.4" cy="8" r="3.2" />
+    <circle cx="23.6" cy="12.4" r="3.1" />
+  </g>
+</svg>

@@ -1,0 +1,289 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+}
+
+const { project } = Astro.props;
+
+/* The figure is one fetch: a trail of prints curving out to the ball. Prints
+   are sampled off a cubic Bezier so each one follows the path's tangent
+   instead of being placed by hand. */
+const CURVE = [
+  { x: 28, y: 288 },
+  { x: 150, y: 300 },
+  { x: 110, y: 130 },
+  { x: 200, y: 124 },
+];
+const BALL = { x: 244, y: 82, r: 26 };
+const PRINTS = 10;
+/** Half the width of a pair of prints, so the trail reads as a gait. */
+const STRIDE = 7.5;
+
+function along(t: number) {
+  const [p0, p1, p2, p3] = CURVE as [typeof CURVE[0], typeof CURVE[0], typeof CURVE[0], typeof CURVE[0]];
+  const u = 1 - t;
+  const at = (a: number, b: number, c: number, d: number) =>
+    u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
+  const slope = (a: number, b: number, c: number, d: number) =>
+    3 * u * u * (b - a) + 6 * u * t * (c - b) + 3 * t * t * (d - c);
+  return {
+    x: at(p0.x, p1.x, p2.x, p3.x),
+    y: at(p0.y, p1.y, p2.y, p3.y),
+    heading: Math.atan2(
+      slope(p0.y, p1.y, p2.y, p3.y),
+      slope(p0.x, p1.x, p2.x, p3.x),
+    ),
+  };
+}
+
+const trail = Array.from({ length: PRINTS }, (_, i) => {
+  const { x, y, heading } = along(0.03 + (i / (PRINTS - 1)) * 0.94);
+  const side = i % 2 === 0 ? 1 : -1;
+  return {
+    x: x - Math.sin(heading) * STRIDE * side,
+    y: y + Math.cos(heading) * STRIDE * side,
+    /* The paw glyph points up, so it needs a quarter turn onto the heading. */
+    angle: (heading * 180) / Math.PI + 90,
+    delay: (i * 0.26).toFixed(2),
+  };
+});
+
+/** The two seams of a ball, anchored on the circle at +/-40 degrees. */
+const seam = (dir: 1 | -1) => {
+  const { x, y, r } = BALL;
+  const ex = x + dir * r * Math.cos(Math.PI / 4.5);
+  const ey = r * Math.sin(Math.PI / 4.5);
+  const c = x + dir * r * 0.18;
+  return `M ${ex.toFixed(1)} ${(y - ey).toFixed(1)} C ${c.toFixed(1)} ${(y - r * 0.34).toFixed(1)}, ${c.toFixed(1)} ${(y + r * 0.34).toFixed(1)}, ${ex.toFixed(1)} ${(y + ey).toFixed(1)}`;
+};
+
+/* SVG ids must be unique per instance once several panels share a page. */
+const glowId = `glow-${project.title.replace(/\W/g, '')}`;
+---
+
+<figure class="panel" data-reveal data-reveal-delay="120">
+  <div class="panel__frame">
+    <div class="panel__head">
+      <span class="mono">Vitals</span>
+      <span class="mono panel__status">{project.status} · {project.year.split('-')[0]}</span>
+    </div>
+
+    <div class="panel__stage">
+      <svg class="fetch" viewBox="0 0 320 320" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id={glowId} cx="50%" cy="50%">
+            <stop offset="0%" stop-color="var(--t-accent)" stop-opacity="0.5"></stop>
+            <stop offset="45%" stop-color="var(--t-accent)" stop-opacity="0.12"></stop>
+            <stop offset="100%" stop-color="var(--t-accent)" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+
+        {
+          trail.map((print) => (
+            <g
+              class="fetch__paw"
+              style={`--delay:${print.delay}s`}
+              transform={`translate(${print.x.toFixed(1)} ${print.y.toFixed(1)}) rotate(${print.angle.toFixed(1)}) scale(0.95) translate(-15 -15.8)`}
+            >
+              <ellipse cx="15" cy="21" rx="7.4" ry="6" />
+              <circle cx="7.4" cy="12.4" r="3.1" />
+              <circle cx="12.6" cy="8" r="3.2" />
+              <circle cx="18.4" cy="8" r="3.2" />
+              <circle cx="23.6" cy="12.4" r="3.1" />
+            </g>
+          ))
+        }
+
+        <circle
+          class="fetch__glow"
+          cx={BALL.x}
+          cy={BALL.y}
+          r={BALL.r * 2.6}
+          fill={`url(#${glowId})`}></circle>
+        <circle class="fetch__ball" cx={BALL.x} cy={BALL.y} r={BALL.r}></circle>
+        <ellipse
+          class="fetch__shine"
+          cx={BALL.x - BALL.r * 0.34}
+          cy={BALL.y - BALL.r * 0.4}
+          rx={BALL.r * 0.34}
+          ry={BALL.r * 0.22}></ellipse>
+        <path class="fetch__seam" d={seam(-1)}></path>
+        <path class="fetch__seam" d={seam(1)}></path>
+      </svg>
+    </div>
+
+    {
+      project.outcomes.length > 0 && (
+        <dl class="panel__vitals">
+          {project.outcomes.map((outcome) => (
+            <div class="cell">
+              <dd class="cell__value">{outcome.value}</dd>
+              <dt class="cell__label">{outcome.label}</dt>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+  </div>
+</figure>
+
+<style>
+  .panel {
+    margin: 0;
+  }
+
+  .panel__frame {
+    position: relative;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-l);
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 3%), transparent 45%),
+      rgb(11 16 13 / 72%);
+    box-shadow: var(--sh-l), var(--sh-inset);
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .panel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-s);
+    padding: 0.85rem var(--sp-m);
+    border-block-end: 1px solid var(--c-line);
+    font-size: var(--step--2);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--c-dim);
+  }
+
+  .panel__status {
+    color: var(--t-accent);
+  }
+
+  .panel__stage {
+    display: grid;
+    place-items: center;
+    padding: var(--sp-s);
+  }
+
+  .fetch {
+    width: min(100%, 22rem);
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Prints rest at a low opacity and brighten in sequence, so the trail reads
+     as something that walked rather than something that was drawn. */
+  .fetch__paw {
+    fill: var(--t-accent);
+    opacity: 0.55;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .fetch__paw {
+      opacity: 0.28;
+      animation: pad 3.6s var(--e-out) infinite;
+      animation-delay: var(--delay);
+    }
+
+    .fetch__glow {
+      animation: breathe 3.6s var(--e-in-out) infinite;
+    }
+  }
+
+  @keyframes pad {
+    0%,
+    70%,
+    100% {
+      opacity: 0.28;
+    }
+    10% {
+      opacity: 1;
+    }
+    40% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.7;
+    }
+    55% {
+      opacity: 1;
+    }
+  }
+
+  .fetch__ball {
+    fill: var(--t-accent);
+  }
+
+  .fetch__shine {
+    fill: #fff;
+    opacity: 0.22;
+  }
+
+  .fetch__seam {
+    fill: none;
+    stroke: rgb(6 9 7 / 45%);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+
+  /* -------------------------------------------------------------- vitals */
+
+  .panel__vitals {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    background: var(--c-line);
+    border-block-start: 1px solid var(--c-line);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: var(--sp-s) var(--sp-m);
+    background: rgb(11 16 13 / 92%);
+  }
+
+  /* An odd final metric spans the row rather than leaving a dead cell. */
+  .cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  /* An odd final reading spans the row rather than leaving a dead cell. */
+  .cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .cell__value {
+    margin: 0;
+    font-family: var(--f-display);
+    font-size: var(--step-2);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: var(--ls-display);
+    color: var(--c-text-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cell__label {
+    font-size: var(--step--2);
+    line-height: 1.35;
+    color: var(--c-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fetch__glow {
+      opacity: 0.8;
+    }
+  }
+</style>

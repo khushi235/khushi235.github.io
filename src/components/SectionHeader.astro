@@ -1,0 +1,80 @@
+---
+interface Props {
+  index: string;
+  id?: string;
+  title: string;
+  lede?: string;
+  align?: 'start' | 'between';
+}
+
+const { index, id, title, lede, align = 'between' } = Astro.props;
+---
+
+<header class:list={['sec-head', `sec-head--${align}`]} data-reveal>
+  <div class="sec-head__meta">
+    <span class="sec-head__index mono">{index}</span>
+    <span class="sec-head__rule" aria-hidden="true"></span>
+    <h2 class="sec-head__title" id={id}>{title}</h2>
+  </div>
+  {lede && <p class="sec-head__lede lede">{lede}</p>}
+</header>
+
+<style>
+  .sec-head {
+    display: grid;
+    gap: var(--sp-m);
+    margin-block-end: var(--sp-2xl);
+  }
+
+  .sec-head__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+
+  .sec-head__index {
+    color: var(--c-fern);
+    font-size: var(--step--2);
+    letter-spacing: var(--ls-label);
+  }
+
+  .sec-head__rule {
+    width: clamp(1.5rem, 5vw, 4rem);
+    height: 1px;
+    background: linear-gradient(90deg, var(--c-fern), transparent);
+  }
+
+  /* Wide tracking plus a long label overruns a 320px screen, so the title
+     steps down below the smallest breakpoint. */
+  .sec-head__title {
+    font-size: var(--step-1);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-text);
+  }
+
+  @media (min-width: 30rem) {
+    .sec-head__title {
+      font-size: var(--step-2);
+      letter-spacing: var(--ls-label);
+    }
+  }
+
+  .sec-head__lede {
+    max-width: 44ch;
+  }
+
+  @media (min-width: 60rem) {
+    .sec-head--between {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      align-items: end;
+      gap: var(--sp-xl);
+    }
+
+    .sec-head--between .sec-head__lede {
+      justify-self: end;
+    }
+  }
+</style>

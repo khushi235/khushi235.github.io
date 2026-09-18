@@ -1,0 +1,219 @@
+---
+/**
+ * The persistent environment: a dusk-lit field of paw prints with the
+ * photograph of Khushi and Rio sitting over it.
+ *
+ * The paw field is CSS and paints instantly; the photograph carries no
+ * entrance animation on purpose — anything that starts at zero opacity stays
+ * invisible wherever the animation timeline is frozen, such as a tab that
+ * loads in the background.
+ */
+import { url } from '../lib/site';
+
+interface Props {
+  /** Sub-pages get the environment without the subject front and centre. */
+  ambient?: boolean;
+}
+const { ambient = false } = Astro.props;
+
+const WIDTHS = [480, 720, 1024, 1440, 1920, 2540];
+const srcset = (ext: string) =>
+  WIDTHS.map((w) => `${url(`/images/backdrop/companion-${w}.${ext}`)} ${w}w`).join(', ');
+
+/* Matches the CSS below: the plate is square and sized to sit wholly inside
+   the viewport, so neither of them is ever clipped by an edge. */
+const sizes = '(max-aspect-ratio: 1/1) min(72vw, 34svh), min(48vw, 78vh)';
+---
+
+<div
+  class="backdrop"
+  aria-hidden="true"
+  data-backdrop-host
+  data-ambient={ambient ? 'true' : undefined}
+>
+  <div class="backdrop__subject">
+    <picture class="backdrop__plate">
+      <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+      <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+      <img
+        class="backdrop__img"
+        src={url('/images/backdrop/companion-1024.webp')}
+        alt=""
+        width="2540"
+        height="2540"
+        decoding="async"
+        fetchpriority="low"
+      />
+    </picture>
+  </div>
+
+  <div class="backdrop__grade"></div>
+</div>
+
+<style>
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-bg);
+    pointer-events: none;
+    overflow: hidden;
+    background-color: var(--c-void);
+    /* Two low washes and a field of paw prints, painted immediately so the
+       first frame is never an empty rectangle. */
+    background-image:
+      radial-gradient(60% 50% at 16% 82%, rgb(58 118 78 / 15%), transparent 70%),
+      radial-gradient(45% 40% at 88% 14%, rgb(138 110 58 / 13%), transparent 70%),
+      url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27420%27 height=%27420%27%3E%3Cg fill=%27%23cfeed9%27%3E%3Cg opacity=%27.075%27 transform=%27translate(34,48) rotate(-14)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3Cg opacity=%27.05%27 transform=%27translate(150,22) rotate(12) scale(.85)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3Cg opacity=%27.085%27 transform=%27translate(272,96) rotate(-26) scale(1.05)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3Cg opacity=%27.06%27 transform=%27translate(76,206) rotate(22) scale(.9)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3Cg opacity=%27.045%27 transform=%27translate(340,244) rotate(6) scale(.8)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3Cg opacity=%27.07%27 transform=%27translate(196,300) rotate(-8)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3Cg opacity=%27.05%27 transform=%27translate(20,336) rotate(30) scale(.75)%27%3E%3Cellipse cx=%2715%27 cy=%2721%27 rx=%277.4%27 ry=%276%27/%3E%3Ccircle cx=%277.4%27 cy=%2712.4%27 r=%273.1%27/%3E%3Ccircle cx=%2712.6%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2718.4%27 cy=%278%27 r=%273.2%27/%3E%3Ccircle cx=%2723.6%27 cy=%2712.4%27 r=%273.1%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-size: auto, auto, 420px 420px;
+  }
+
+  /* ---------------------------------------------------------------- subject */
+
+  /* Carries the placement and the parallax so the glow below is free of the
+     plate's mask — a mask would clip it away. */
+  .backdrop__subject {
+    position: absolute;
+    top: 50%;
+    right: 2vw;
+    width: min(48vw, 78vh);
+    aspect-ratio: 1;
+    translate: 0 -50%;
+    transform: translate3d(var(--px, 0px), calc(var(--py, 0px) + var(--drift, 0px)), 0);
+    opacity: var(--dim, 1);
+    will-change: transform;
+  }
+
+  /* A warm halo so the portrait sits in the page rather than on top of it. */
+  .backdrop__subject::before {
+    content: '';
+    position: absolute;
+    inset: -22%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle closest-side, rgb(242 215 163 / 15%) 0 34%, transparent 70%),
+      radial-gradient(circle closest-side, rgb(143 227 162 / 10%) 0 50%, transparent 82%);
+  }
+
+  .backdrop__plate {
+    position: absolute;
+    inset: 0;
+    display: block;
+    /* `closest-side` pins the gradient to the inscribed circle, so the square's
+       corners fall outside it entirely and the plate reads as a disc rather
+       than a rounded box. */
+    -webkit-mask-image: radial-gradient(
+      circle closest-side,
+      #000 0 68%,
+      rgb(0 0 0 / 52%) 85%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle closest-side,
+      #000 0 68%,
+      rgb(0 0 0 / 52%) 85%,
+      transparent 100%
+    );
+  }
+
+  /* Sinks the photograph's rim into the page colour, so the edge dissolves
+     instead of fading out as a visibly lighter ring. */
+  .backdrop__plate::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle closest-side,
+      transparent 46%,
+      rgb(6 9 7 / 45%) 78%,
+      rgb(6 9 7 / 88%) 100%
+    );
+  }
+
+  .backdrop__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.04) contrast(1.03);
+  }
+
+  /* --------------------------------------------------------------- grading */
+
+  .backdrop__grade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgb(6 9 7 / 88%) 0%,
+        rgb(6 9 7 / 58%) 40%,
+        rgb(6 9 7 / 0%) 72%
+      ),
+      radial-gradient(130% 95% at 50% 50%, transparent 38%, rgb(6 9 7 / 62%) 100%);
+  }
+
+  /* The whole field is scrimmed as the page scrolls away from the hero. */
+  .backdrop__grade::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--c-void);
+    opacity: calc((1 - var(--dim, 1)) * 0.78);
+  }
+
+  /* ----------------------------------------------------------- breakpoints */
+
+  @media (max-aspect-ratio: 1/1) {
+    .backdrop__subject {
+      top: var(--subject-top);
+      right: auto;
+      left: 50%;
+      width: var(--subject-size);
+      translate: -50% 0;
+    }
+
+    /* Every stop is keyed to the subject's own band rather than to a share of
+       the viewport, so the ramp always begins below the circle. */
+    .backdrop__grade {
+      background:
+        linear-gradient(
+          180deg,
+          rgb(6 9 7 / 30%) 0,
+          rgb(6 9 7 / 4%) calc(var(--subject-top) + var(--subject-size) * 0.2),
+          rgb(6 9 7 / 10%) calc(var(--subject-bottom) - var(--subject-size) * 0.1),
+          rgb(6 9 7 / 62%) calc(var(--subject-bottom) + 2.5rem),
+          rgb(6 9 7 / 95%) calc(var(--subject-bottom) + 10rem)
+        ),
+        radial-gradient(
+          120% 58% at 50% var(--subject-top),
+          transparent 54%,
+          rgb(6 9 7 / 45%) 100%
+        );
+    }
+  }
+
+  .backdrop[data-ambient] .backdrop__subject {
+    opacity: calc(var(--dim, 1) * 0.16);
+    translate: 0 -76%;
+  }
+
+  @media (max-aspect-ratio: 1/1) {
+    .backdrop[data-ambient] .backdrop__subject {
+      translate: -50% -42%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .backdrop__subject {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { mountBackdrop } from '../scripts/backdrop';
+
+  const host = document.querySelector<HTMLElement>('[data-backdrop-host]');
+  if (host) mountBackdrop(host);
+</script>

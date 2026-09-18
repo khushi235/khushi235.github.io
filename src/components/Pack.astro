@@ -1,0 +1,349 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeader from './SectionHeader.astro';
+import { normalizeSkill } from '../lib/site';
+
+const groups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
+
+const W = 300;
+const H = 104;
+
+/* Each group is drawn as a collar laid flat: a strap that sags under its own
+   weight, with one tag hanging off it per skill. */
+const STRAP = { x0: 10, y0: 11, cx: 150, cy: 122, x1: 290, y1: 11 };
+/** Length of the link between the strap and the tag it carries. */
+const DROP = 17;
+
+const strapPath = `M ${STRAP.x0} ${STRAP.y0} Q ${STRAP.cx} ${STRAP.cy} ${STRAP.x1} ${STRAP.y1}`;
+
+const packs = groups.map((group) => {
+  const items = group.data.items.map(normalizeSkill);
+  const n = items.length;
+
+  const tags = items.map((item, i) => {
+    const t = n > 1 ? 0.07 + (i / (n - 1)) * 0.86 : 0.5;
+    const u = 1 - t;
+    const x = u * u * STRAP.x0 + 2 * u * t * STRAP.cx + t * t * STRAP.x1;
+    const y = u * u * STRAP.y0 + 2 * u * t * STRAP.cy + t * t * STRAP.y1;
+    return {
+      x,
+      y,
+      hangY: y + DROP,
+      left: (x / W) * 100,
+      top: ((y + DROP) / H) * 100,
+      core: item.core,
+    };
+  });
+
+  return { group, items, tags, notes: items.filter((item) => item.note) };
+});
+---
+
+<section class="section" id="pack" aria-labelledby="pack-title">
+  <div class="shell">
+    <SectionHeader
+      index="04"
+      id="pack-title"
+      title="Pack"
+      lede="Grouped by what they're for rather than by how impressive they look in a list. The brighter tags are the ones I reach for first."
+    />
+
+    <ul class="groups" role="list">
+      {
+        packs.map(({ group, items, tags, notes }, gi) => (
+          <li class="group" data-collar data-reveal data-reveal-delay={gi * 60}>
+            <div class="group__head">
+              <span class="mono group__index">{String(gi + 1).padStart(2, '0')}</span>
+              <h3 class="group__label">{group.data.label}</h3>
+              {group.data.note && <p class="group__note">{group.data.note}</p>}
+            </div>
+
+            <div class="collar">
+              <svg
+                class="collar__svg"
+                viewBox={`0 0 ${W} ${H}`}
+                preserveAspectRatio="none"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path class="collar__strap" d={strapPath} />
+                <path class="collar__stitch" d={strapPath} transform="translate(0 -2.6)" />
+                <path class="collar__stitch" d={strapPath} transform="translate(0 2.6)" />
+                {tags.map((tag) => (
+                  <line
+                    class="collar__link"
+                    x1={tag.x.toFixed(1)}
+                    y1={tag.y.toFixed(1)}
+                    x2={tag.x.toFixed(1)}
+                    y2={tag.hangY.toFixed(1)}
+                  />
+                ))}
+              </svg>
+              <span
+                class="collar__buckle"
+                aria-hidden="true"
+                style={`left:${((STRAP.x0 / W) * 100).toFixed(2)}%;top:${((STRAP.y0 / H) * 100).toFixed(2)}%`}
+              />
+              {tags.map((tag, i) => (
+                <span
+                  data-tag
+                  class:list={['collar__tag', tag.core && 'is-core']}
+                  style={`left:${tag.left.toFixed(2)}%;top:${tag.top.toFixed(2)}%`}
+                  title={items[i]!.name}
+                />
+              ))}
+            </div>
+
+            <ul class="chip-row group__items" role="list">
+              {items.map((item, i) => (
+                <li>
+                  <span class:list={['chip', item.core && 'chip--core']} data-tag-index={i}>
+                    {item.core && <span class="chip__spark" aria-hidden="true" />}
+                    {item.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {notes.length > 0 && (
+              <dl class="group__notes">
+                {notes.map((item) => (
+                  <div>
+                    <dt>{item.name}</dt>
+                    <dd>{item.note}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .groups {
+    display: grid;
+    gap: var(--sp-m);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-l);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-l);
+    background: linear-gradient(180deg, rgb(255 255 255 / 2%), transparent 55%), rgb(12 18 14 / 55%);
+    transition: border-color var(--d-base) var(--e-out);
+  }
+
+  .group:hover {
+    border-color: var(--c-line-strong);
+  }
+
+  .group__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.15rem 0.85rem;
+    align-items: baseline;
+  }
+
+  .group__index {
+    font-size: var(--step--2);
+    color: var(--c-dim);
+  }
+
+  .group__label {
+    font-size: var(--step-1);
+    font-weight: 400;
+    letter-spacing: var(--ls-heading);
+    color: var(--c-text-strong);
+  }
+
+  .group__note {
+    grid-column: 2;
+    max-width: 44ch;
+    font-size: var(--step--2);
+    line-height: 1.5;
+    color: var(--c-faint);
+  }
+
+  /* ---------------------------------------------------------------- collar */
+
+  .collar {
+    position: relative;
+    width: 100%;
+    height: 6.5rem;
+    margin-block: var(--sp-m);
+  }
+
+  /* The strap stretches with the card, so every stroke on it is non-scaling
+     and keeps its weight at any width. */
+  .collar__svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .collar__strap {
+    fill: none;
+    stroke: rgb(255 255 255 / 9%);
+    stroke-width: 10;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .collar__stitch {
+    fill: none;
+    stroke: rgb(255 255 255 / 17%);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .collar__link {
+    stroke: rgb(255 255 255 / 22%);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* The strap stretches with the card, so the buckle is a DOM box: it keeps
+     its proportions where an SVG one would be smeared sideways. */
+  .collar__buckle {
+    position: absolute;
+    width: 19px;
+    height: 13px;
+    border: 1.5px solid rgb(255 255 255 / 22%);
+    border-radius: 3px;
+    translate: -50% -50%;
+  }
+
+  .collar__buckle::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    left: 50%;
+    width: 1.5px;
+    background: rgb(255 255 255 / 22%);
+    translate: -50% 0;
+  }
+
+  /* Tags are DOM elements, not SVG, so they stay round at any card width. */
+  .collar__tag {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8b9689;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 35%);
+    translate: -50% -50%;
+    transition:
+      background-color var(--d-base) var(--e-out),
+      box-shadow var(--d-base) var(--e-out),
+      scale var(--d-base) var(--e-spring);
+  }
+
+  .collar__tag.is-core {
+    width: 12px;
+    height: 12px;
+    background: var(--c-fern);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 45%),
+      0 0 0 3px rgb(143 227 162 / 12%),
+      0 0 10px rgb(143 227 162 / 45%);
+  }
+
+  .collar__tag.is-lit {
+    background: var(--c-fern-hot);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 55%),
+      0 0 0 5px rgb(143 227 162 / 14%),
+      0 0 14px var(--c-fern);
+    scale: 1.7;
+  }
+
+  /* ----------------------------------------------------------------- chips */
+
+  .group__items {
+    margin-block-end: var(--sp-s);
+  }
+
+  .chip {
+    cursor: default;
+  }
+
+  .chip:hover,
+  .chip:focus-visible {
+    border-color: var(--c-line-strong);
+    color: var(--c-text);
+  }
+
+  .chip--core {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-color: rgb(143 227 162 / 28%);
+    background: var(--c-fern-wash);
+    color: var(--c-text);
+  }
+
+  .chip__spark {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--c-fern);
+    box-shadow: 0 0 6px var(--c-fern);
+  }
+
+  /* ----------------------------------------------------------------- notes */
+
+  .group__notes {
+    display: grid;
+    gap: 0.5rem;
+    margin: auto 0 0;
+    padding-block-start: var(--sp-s);
+    border-block-start: 1px solid var(--c-line);
+  }
+
+  .group__notes div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.5rem;
+    font-size: var(--step--2);
+    line-height: 1.5;
+  }
+
+  .group__notes dt {
+    color: var(--c-muted);
+    font-family: var(--f-mono);
+  }
+
+  .group__notes dt::after {
+    content: ' —';
+    color: var(--c-dim);
+  }
+
+  .group__notes dd {
+    margin: 0;
+    color: var(--c-faint);
+  }
+
+  /* ----------------------------------------------------------- breakpoints */
+
+  @media (min-width: 52rem) {
+    .groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-l);
+    }
+
+    /* An odd final card spans the row instead of leaving a hole. */
+    .group:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

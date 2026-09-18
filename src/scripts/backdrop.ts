@@ -1,0 +1,68 @@
+/**
+ * Backdrop — parallax and scroll drift for the portrait.
+ *
+ * Everything is written to CSS custom properties, so the compositor does the
+ * work and this file stays tiny. No canvas, no WebGL, no per-frame layout
+ * reads. If it never runs, the plate simply sits still; its fade-in is a CSS
+ * animation, not a scripted one.
+ */
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+export function mountBackdrop(host: HTMLElement): () => void {
+  let px = 0;
+  let py = 0;
+  let tx = 0;
+  let ty = 0;
+  let frame = 0;
+  let alive = true;
+
+  function queue() {
+    if (!frame && alive) frame = requestAnimationFrame(step);
+  }
+
+  function step() {
+    frame = 0;
+    px += (tx - px) * 0.06;
+    py += (ty - py) * 0.06;
+
+    const progress = Math.min(window.scrollY / Math.max(window.innerHeight, 1), 1.4);
+    host.style.setProperty('--px', `${(px * 30).toFixed(2)}px`);
+    host.style.setProperty('--py', `${(py * 20).toFixed(2)}px`);
+    host.style.setProperty('--drift', `${(progress * -14).toFixed(2)}vh`);
+    // A photograph carries detail that a diffuse plate does not, so it has to
+    // recede much further than a simple fade before body copy crosses it.
+    host.style.setProperty('--dim', (1 - Math.min(progress, 1) * 0.92).toFixed(3));
+
+    // Published unitless so foreground layers can pick their own depth.
+    const root = document.documentElement;
+    root.style.setProperty('--ptr-x', px.toFixed(4));
+    root.style.setProperty('--ptr-y', py.toFixed(4));
+
+    if (Math.abs(tx - px) > 0.002 || Math.abs(ty - py) > 0.002) queue();
+  }
+
+  const onScroll = () => queue();
+  const onPointer = (e: PointerEvent) => {
+    if (e.pointerType !== 'mouse') return;
+    tx = 0.5 - e.clientX / window.innerWidth;
+    ty = 0.5 - e.clientY / window.innerHeight;
+    queue();
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+
+  const usePointer = !reduceMotion.matches && window.matchMedia('(pointer: fine)').matches;
+  if (usePointer) window.addEventListener('pointermove', onPointer, { passive: true });
+
+  step();
+
+  return () => {
+    alive = false;
+    cancelAnimationFrame(frame);
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+    window.removeEventListener('pointermove', onPointer);
+  };
+}
