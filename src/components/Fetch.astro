@@ -38,7 +38,7 @@ const archiveHref = 'https://github.com/khushi235?tab=repositories';
               </p>
 
               <h3 class="feature__title">
-                <a href={url(`/fetch/${project.id}`)}>{project.data.title}</a>
+                <a href={url(`/fetch/${project.id}/`)}>{project.data.title}</a>
               </h3>
 
               <p class="feature__desc">{project.data.description}</p>
@@ -64,7 +64,7 @@ const archiveHref = 'https://github.com/khushi235?tab=repositories';
               </ul>
 
               <div class="feature__actions">
-                <a class="btn btn--primary" href={url(`/fetch/${project.id}`)} data-magnetic>
+                <a class="btn btn--primary" href={url(`/fetch/${project.id}/`)} data-magnetic>
                   Case file
                   <svg class="btn__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path
@@ -112,7 +112,7 @@ const archiveHref = 'https://github.com/khushi235?tab=repositories';
         rest.map((project) => (
           <li>
             <article class="card" data-theme={project.data.theme} data-reveal>
-              <a class="card__link" href={url(`/fetch/${project.id}`)}>
+              <a class="card__link" href={url(`/fetch/${project.id}/`)}>
                 <span class="visually-hidden">Open the {project.data.title} case file</span>
               </a>
               <header class="card__head">

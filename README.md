@@ -4,7 +4,7 @@ A static, content-driven personal portfolio. Everything visitors read lives in
 Markdown files under `src/content/`. Nothing on the page depends on an API, a
 database or a server at runtime.
 
-**Live:** set by GitHub Pages after the first deploy (Settings → Pages).
+**Live:** <https://khushi235.github.io> · **Repo:** <https://github.com/khushi235/khushi235.github.io>
 
 ---
 
