@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editing cheatsheet — khushi235.github.io</title>
+    <style>
+      :root {
+        --void: #060907;
+        --deep: #0a0e0b;
+        --surface: #0e1310;
+        --raised: #141a16;
+        --text: #e9ece7;
+        --muted: #a2aa9f;
+        --faint: #6b7a68;
+        --line: rgb(255 255 255 / 9%);
+        --line-strong: rgb(255 255 255 / 16%);
+        --fern: #8fe3a2;
+        --fern-deep: #3f9d5c;
+        --golden: #f2d7a3;
+        --danger: #f0a0a0;
+        --mono: ui-monospace, "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+      }
+
+      * { box-sizing: border-box; margin: 0; }
+
+      body {
+        background: var(--void);
+        color: var(--text);
+        font: 16px/1.65 "Segoe UI", system-ui, -apple-system, sans-serif;
+        padding: 3rem 1.25rem 6rem;
+      }
+
+      main { max-width: 62rem; margin: 0 auto; }
+
+      /* ---------------------------------------------------------- headings */
+
+      h1 {
+        font-size: clamp(1.9rem, 4vw, 2.7rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+
+      h2 {
+        font-size: 1.45rem;
+        letter-spacing: -0.01em;
+        margin: 3.5rem 0 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--line);
+      }
+
+      h2 .num {
+        font: 600 0.75rem/1 var(--mono);
+        color: var(--fern);
+        letter-spacing: 0.18em;
+        display: block;
+        margin-bottom: 0.6rem;
+      }
+
+      h3 {
+        font-size: 1.05rem;
+        margin: 2rem 0 0.6rem;
+        color: #fff;
+      }
+
+      p { margin: 0.75rem 0; color: var(--muted); }
+      p strong, li strong { color: var(--text); font-weight: 600; }
+
+      .sub { font-size: 1.05rem; margin-top: 1rem; max-width: 46rem; }
+
+      /* ------------------------------------------------------------- bits */
+
+      code {
+        font: 0.875em/1.4 var(--mono);
+        background: rgb(143 227 162 / 10%);
+        color: var(--fern);
+        padding: 0.12em 0.4em;
+        border-radius: 4px;
+        word-break: break-word;
+      }
+
+      pre {
+        background: var(--deep);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--fern-deep);
+        border-radius: 8px;
+        padding: 1rem 1.1rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+
+      pre code {
+        background: none;
+        color: var(--text);
+        padding: 0;
+        font-size: 0.82rem;
+        line-height: 1.6;
+        white-space: pre;
+      }
+
+      pre .c { color: var(--faint); }
+      pre .k { color: var(--fern); }
+      pre .s { color: var(--golden); }
+
+      ul, ol { margin: 0.75rem 0; padding-left: 1.3rem; color: var(--muted); }
+      li { margin: 0.4rem 0; }
+      li::marker { color: var(--fern-deep); }
+
+      a { color: var(--fern); }
+
+      /* ------------------------------------------------------------ panels */
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1.4rem 1.5rem;
+        margin: 1.5rem 0;
+      }
+
+      .panel--answer {
+        border-color: rgb(143 227 162 / 35%);
+        background: linear-gradient(180deg, rgb(143 227 162 / 8%), var(--surface));
+      }
+
+      .panel--warn {
+        border-color: rgb(240 160 160 / 35%);
+        background: rgb(240 160 160 / 6%);
+      }
+
+      .panel--warn .tag { color: var(--danger); }
+
+      .tag {
+        font: 600 0.7rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--fern);
+        display: block;
+        margin-bottom: 0.7rem;
+      }
+
+      .panel p:first-of-type { margin-top: 0; }
+      .panel p:last-child, .panel ul:last-child, .panel ol:last-child { margin-bottom: 0; }
+
+      /* ------------------------------------------------------------ tables */
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+        font-size: 0.92rem;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 0.7rem 0.8rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        font: 600 0.72rem/1.3 var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--faint);
+        border-bottom-color: var(--line-strong);
+      }
+
+      td { color: var(--muted); }
+      td:first-child { color: var(--text); width: 38%; }
+
+      /* ------------------------------------------------------------- flow */
+
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: stretch;
+        margin: 1.5rem 0;
+        list-style: none;
+        padding: 0;
+      }
+
+      .flow li {
+        flex: 1 1 8rem;
+        background: var(--raised);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 0.9rem;
+        margin: 0;
+        font-size: 0.84rem;
+        color: var(--muted);
+        position: relative;
+      }
+
+      .flow li b {
+        display: block;
+        color: var(--text);
+        font-size: 0.93rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .flow li span {
+        font: 0.68rem/1 var(--mono);
+        color: var(--fern);
+        letter-spacing: 0.12em;
+      }
+
+      /* ------------------------------------------------------- good / bad */
+
+      .compare { display: grid; gap: 1rem; grid-template-columns: 1fr; margin: 1rem 0; }
+      @media (min-width: 48rem) { .compare { grid-template-columns: 1fr 1fr; } }
+
+      .compare > div { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+      .compare h4 {
+        margin: 0;
+        padding: 0.55rem 0.9rem;
+        font: 600 0.72rem/1.3 var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .ok h4 { background: rgb(143 227 162 / 14%); color: var(--fern); }
+      .no h4 { background: rgb(240 160 160 / 12%); color: var(--danger); }
+      .compare pre { margin: 0; border: 0; border-radius: 0; border-left: 0; }
+
+      /* ------------------------------------------------------------ misc */
+
+      .lead-note {
+        font: 0.8rem/1.5 var(--mono);
+        color: var(--faint);
+        letter-spacing: 0.02em;
+      }
+
+      hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0 0; }
+
+      footer { margin-top: 2rem; color: var(--faint); font-size: 0.85rem; }
+
+      @media print {
+        body { background: #fff; color: #111; padding: 0; }
+        h2 { page-break-after: avoid; }
+        pre, .panel, table { page-break-inside: avoid; }
+        code { background: #eee; color: #05502a; }
+        pre { background: #f6f6f6; border-color: #ccc; }
+        pre code, td, p, li { color: #222; }
+        .panel { background: #f9f9f9; border-color: #ccc; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <p class="lead-note">khushi235.github.io · editing cheatsheet</p>
+      <h1>Changing text on your site</h1>
+      <p class="sub">
+        Everything a visitor reads lives in Markdown files. You can edit them straight on
+        GitHub.com — no laptop, no terminal, no code. This sheet covers what to click,
+        what to type, and the handful of rules that keep the site from breaking.
+      </p>
+
+      <div class="panel panel--answer">
+        <span class="tag">The short answer</span>
+        <p>
+          <strong>Yes.</strong> Edit a file on github.com, click <strong>Commit changes</strong>,
+          and the site rebuilds and republishes itself automatically. Your edit is live at
+          <a href="https://khushi235.github.io">khushi235.github.io</a> in about a minute.
+          You do not need to run anything.
+        </p>
+        <p>
+          <strong>One exception:</strong> replacing the resume PDF needs a laptop (see
+          section 8). Everything else on this sheet is pure point-and-click.
+        </p>
+      </div>
+
+      <!-- ============================================================= 1 -->
+      <h2><span class="num">01</span>What happens when you save</h2>
+
+      <ol class="flow">
+        <li><span>YOU</span><b>Edit &amp; commit</b>Change text in a <code>.md</code> file on github.com.</li>
+        <li><span>AUTO</span><b>Checks run</b>Content is validated and type-checked.</li>
+        <li><span>AUTO</span><b>Site rebuilds</b>Pages are regenerated from your text.</li>
+        <li><span>AUTO</span><b>Live</b>Published to khushi235.github.io, ~1 min.</li>
+      </ol>
+
+      <p>
+        The safety net matters: <strong>if your edit has a mistake, the build stops and the
+        live site stays exactly as it was.</strong> A broken edit can never take your site
+        down — it just doesn't publish. You'll see a red ✗ in the Actions tab telling you
+        which file and which field to fix.
+      </p>
+
+      <!-- ============================================================= 2 -->
+      <h2><span class="num">02</span>Where every piece of text lives</h2>
+
+      <table>
+        <thead>
+          <tr><th>I want to change…</th><th>Edit this file</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Your name, job title, headline, the "about" paragraphs</td><td><code>src/content/profile/profile.md</code></td></tr>
+          <tr><td>Email, location, "Open to…" pill, the 4 big numbers</td><td><code>src/content/profile/profile.md</code></td></tr>
+          <tr><td>GitHub / LinkedIn links</td><td><code>src/content/profile/profile.md</code> → <code>socials:</code></td></tr>
+          <tr><td>A project's title, summary, bullets, results</td><td><code>src/content/projects/&lt;name&gt;.md</code></td></tr>
+          <tr><td>A job: company, title, dates, bullet points</td><td><code>src/content/experience/&lt;name&gt;.md</code></td></tr>
+          <tr><td>Degrees and schools</td><td><code>src/content/education/&lt;name&gt;.md</code></td></tr>
+          <tr><td>Skill groups and the tools inside them</td><td><code>src/content/skills/&lt;name&gt;.md</code></td></tr>
+          <tr><td>Certifications / awards</td><td><code>src/content/credentials/</code></td></tr>
+          <tr><td>Section intro lines ("Things I went and got…")</td><td><code>src/components/Fetch.astro</code>, <code>Trail.astro</code>, <code>Pack.astro</code> — see section 7</td></tr>
+          <tr><td>The "page not found" wording</td><td><code>src/pages/404.astro</code></td></tr>
+          <tr><td>The resume PDF itself</td><td>Needs a laptop — see section 8</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ============================================================= 3 -->
+      <h2><span class="num">03</span>The click-by-click routine</h2>
+
+      <ol>
+        <li>Go to <a href="https://github.com/khushi235/khushi235.github.io">github.com/khushi235/khushi235.github.io</a>.</li>
+        <li>Click through the folders to the file you want — e.g. <code>src</code> → <code>content</code> → <code>projects</code> → <code>diamond-pricing-ai.md</code>.</li>
+        <li>Click the <strong>pencil icon</strong> (top right of the file) to edit.</li>
+        <li>Change <strong>only the words</strong>. Leave every field name, colon, dash and indent exactly as it is.</li>
+        <li>Click <strong>Commit changes…</strong>, type a short note like <em>"Update diamond project results"</em>, keep <strong>Commit directly to the <code>main</code> branch</strong> selected, and confirm.</li>
+        <li>Open the <strong>Actions</strong> tab. Wait for the green ✓ (about a minute).</li>
+        <li>Open <a href="https://khushi235.github.io">khushi235.github.io</a> and hard-refresh: <strong>Ctrl</strong>+<strong>Shift</strong>+<strong>R</strong>.</li>
+      </ol>
+
+      <div class="panel">
+        <span class="tag">Editing on your phone</span>
+        <p>
+          Same steps in a mobile browser. If GitHub shows you the rendered view instead of
+          the editor, tap the <strong>⋯</strong> menu → <strong>Edit</strong>. Requesting the
+          desktop site makes the pencil icon easier to find.
+        </p>
+      </div>
+
+      <!-- ============================================================= 4 -->
+      <h2><span class="num">04</span>How these files are laid out</h2>
+
+      <p>
+        Every content file has two parts. The bit between the two <code>---</code> lines is
+        <strong>structured data</strong> (fields the site reads). Everything below the second
+        <code>---</code> is <strong>free prose</strong> — write whatever you like there.
+      </p>
+
+<pre><code><span class="c">--- &lt;- structured fields start here</span>
+<span class="k">title:</span> Diamond Pricing AI
+<span class="k">tagline:</span> Defensible Prices and Real Comparables
+<span class="k">order:</span> 4
+<span class="k">technologies:</span>
+  - Python
+  - SQL
+<span class="c">--- &lt;- structured fields end here</span>
+
+Write normal sentences down here. **Bold** and *italic* work.
+Blank line between paragraphs.</code></pre>
+
+      <h3>The five rules that prevent every common breakage</h3>
+      <ol>
+        <li><strong>Never rename the words before a colon.</strong> <code>title:</code>, <code>order:</code>, <code>summary:</code> are wiring, not labels.</li>
+        <li><strong>Spaces only, never Tab.</strong> Keep the existing indentation — copy the line above and edit it.</li>
+        <li><strong>A list item is a dash, a space, then the text.</strong> <code>- Python</code>, never <code>-Python</code>.</li>
+        <li><strong>If your text contains a colon-space or starts with a quote,</strong> wrap the whole line in double quotes, or use the <code>&gt;-</code> block style below.</li>
+        <li><strong>Leave <code>&gt;-</code> blocks alone structurally.</strong> Just retype the sentences under it, keeping them indented.</li>
+      </ol>
+
+      <div class="compare">
+        <div class="ok">
+          <h4>✓ Safe</h4>
+<pre><code><span class="k">tagline:</span> Faster, cleaner reporting
+<span class="k">description:</span> <span class="s">&gt;-</span>
+  A long paragraph that can
+  wrap across several lines
+  as long as each one stays
+  indented by two spaces.
+<span class="k">role:</span> <span class="s">"Analyst: Data &amp; AI"</span></code></pre>
+        </div>
+        <div class="no">
+          <h4>✗ Breaks the build</h4>
+<pre><code><span class="k">Tagline:</span> Faster reporting
+<span class="k">role:</span> Analyst: Data &amp; AI
+<span class="k">technologies:</span>
+-Python
+<span class="k">description:</span> <span class="s">&gt;-</span>
+Not indented, so YAML
+loses track of the block.</code></pre>
+        </div>
+      </div>
+
+      <!-- ============================================================= 5 -->
+      <h2><span class="num">05</span>Recipes</h2>
+
+      <h3>Change your headline, bio or the four big numbers</h3>
+      <p>All in <code>src/content/profile/profile.md</code>:</p>
+<pre><code><span class="k">role:</span> Data &amp; AI Analyst            <span class="c"># under your name in the hero</span>
+<span class="k">headline:</span> I turn messy data into…   <span class="c"># the big statement line</span>
+<span class="k">availability:</span> Open to data roles   <span class="c"># delete this line to hide the pill</span>
+<span class="k">metrics:</span>                          <span class="c"># max 4 — a 5th fails the build</span>
+  - <span class="k">value:</span> 40%
+    <span class="k">label:</span> Fewer analytical errors after automation</code></pre>
+      <p>The paragraphs <em>below</em> the closing <code>---</code> are your "about" text. Rewrite them freely.</p>
+
+      <h3>Edit an existing project</h3>
+      <p>
+        Open <code>src/content/projects/&lt;name&gt;.md</code>. The fields you'll most likely
+        touch: <code>title</code>, <code>tagline</code>, <code>description</code> (the card
+        summary), <code>problem</code>, <code>approach</code>, <code>architecture</code>
+        (bullet list), <code>decisions</code> (title + detail pairs) and <code>outcomes</code>
+        (value + label pairs). Anything optional you delete simply stops appearing.
+      </p>
+      <p>
+        <code>order</code> controls position — lower numbers come first.
+        <code>featured: true</code> promotes it to a full-width case study.
+        <code>status</code> must be one of <code>active</code>, <code>shipped</code>,
+        <code>archived</code>. <code>theme</code> must be one of <code>meadow</code>,
+        <code>golden</code>, <code>sand</code>, <code>slate</code>.
+      </p>
+
+      <h3>Add a new project</h3>
+      <ol>
+        <li>Open <code>src/content/projects/_template.md</code> and copy everything.</li>
+        <li>In the <code>projects</code> folder click <strong>Add file → Create new file</strong>.</li>
+        <li>Name it <code>my-new-project.md</code> — lowercase, hyphens, no spaces. <strong>The filename becomes the web address:</strong> <code>/fetch/my-new-project/</code>.</li>
+        <li>Paste the template, fill it in, delete the commented-out lines you don't need, commit.</li>
+      </ol>
+      <p>The card appears on the homepage and the detail page builds itself. Nothing else to update.</p>
+
+      <h3>Remove a project</h3>
+      <p>Open the file → <strong>⋯</strong> menu → <strong>Delete file</strong> → commit. Keep at least one project; an empty folder fails the build.</p>
+
+      <h3>Add or edit a job</h3>
+      <p>
+        <code>src/content/experience/&lt;name&gt;.md</code>. Dates are <code>YYYY-MM</code>
+        (e.g. <code>2025-04</code>). For your current role, use <code>current: true</code> and
+        leave <code>end</code> out — it displays as "Present". <code>order: 1</code> is the
+        newest role.
+      </p>
+
+      <h3>Skills</h3>
+      <p>
+        <code>src/content/skills/&lt;name&gt;.md</code>. Items can be a plain string, or a
+        string with extra detail:
+      </p>
+<pre><code><span class="k">items:</span>
+  - Power BI
+  - <span class="k">name:</span> SQL
+    <span class="k">note:</span> Primary language day to day
+    <span class="k">core:</span> true          <span class="c"># renders brighter</span></code></pre>
+
+      <h3>Social links</h3>
+      <p>
+        The <code>socials:</code> list in <code>profile.md</code> feeds the nav, the contact
+        section, the footer and the search-engine data all at once. Change it in that one place.
+      </p>
+
+      <!-- ============================================================= 6 -->
+      <h2><span class="num">06</span>What you must not touch</h2>
+
+      <div class="panel panel--warn">
+        <span class="tag">Leave these alone</span>
+        <ul>
+          <li><code>src/styles/</code> — controls how everything looks.</li>
+          <li><code>src/layouts/</code>, <code>src/lib/</code>, <code>src/scripts/</code> — plumbing.</li>
+          <li><code>astro.config.mjs</code>, <code>package.json</code>, <code>package-lock.json</code>, <code>tsconfig.json</code>.</li>
+          <li><code>.github/workflows/deploy.yml</code> — the thing that publishes the site.</li>
+          <li><code>src/content.config.ts</code> — the rulebook your content is checked against.</li>
+          <li>Anything inside <code>&lt; &gt;</code> angle brackets, or any <code>class="…"</code> value.</li>
+        </ul>
+      </div>
+
+      <!-- ============================================================= 7 -->
+      <h2><span class="num">07</span>Section headings and intro lines</h2>
+
+      <p>
+        The five section names (Origin, Trail, Fetch, Pack, Whistle) and their intro lines
+        are not in Markdown — they're in component files. Editing them is still safe, but be
+        surgical: <strong>change only the words between the quote marks, and keep both quotes.</strong>
+      </p>
+
+<pre><code><span class="c">// src/components/Fetch.astro</span>
+  <span class="k">title=</span><span class="s">"Fetch"</span>
+  <span class="k">lede=</span><span class="s">"Things I went and got: analytics systems built end to end."</span></code></pre>
+
+      <ul>
+        <li>Intro lines: <code>Trail.astro</code>, <code>Fetch.astro</code>, <code>Pack.astro</code> (look for <code>lede=</code>).</li>
+        <li>Contact paragraph: <code>Whistle.astro</code> (plain sentence inside <code>&lt;p&gt;</code> tags).</li>
+        <li>The nav's section names also live in <code>src/lib/site.ts</code> — if you rename a section, change it in <em>both</em> places.</li>
+        <li>404 wording: <code>src/pages/404.astro</code>.</li>
+        <li>Footer photo credit: <code>src/components/Footer.astro</code>.</li>
+      </ul>
+
+      <p>If a word you type contains a double quote, use an apostrophe instead — it's not worth the risk.</p>
+
+      <!-- ============================================================= 8 -->
+      <h2><span class="num">08</span>Replacing the resume</h2>
+
+      <div class="panel panel--warn">
+        <span class="tag">This one is not a web edit</span>
+        <p>
+          <strong>Never upload your personal resume PDF straight into the repo.</strong> The copy
+          you email people has your phone number in the header. Anything in <code>public/</code>
+          is downloaded, indexed and scraped — you cannot take it back.
+        </p>
+      </div>
+
+      <p>On a laptop with the project cloned:</p>
+      <ol>
+        <li>Save your new full resume at the project root as <code>Khushi Shukla Resume.pdf</code>. That name is ignored by Git, so it never gets published.</li>
+        <li>Run <code>npm run resume</code>. It strips the phone number out of the PDF properly, rebuilds the preview images the on-site viewer shows, and <strong>refuses to finish if a phone number survives</strong>.</li>
+        <li>In <code>src/content/profile/profile.md</code>, update <code>resume.updated</code> to the new month (e.g. <code>2026-11</code>).</li>
+        <li>Run <code>npm run verify</code>, then commit and push.</li>
+      </ol>
+      <p class="lead-note">Needs Python with PyMuPDF once: <code>pip install pymupdf</code>.</p>
+
+      <p>
+        Changing only the <em>date</em> shown next to the resume — with no new PDF — is a
+        normal web edit: just change <code>resume.updated</code> in <code>profile.md</code>.
+      </p>
+
+      <!-- ============================================================= 9 -->
+      <h2><span class="num">09</span>Checking it worked, and undoing it</h2>
+
+      <h3>Did it publish?</h3>
+      <ol>
+        <li><strong>Actions</strong> tab → newest run at the top.</li>
+        <li>Green ✓ = live. Yellow dot = still building, wait. Red ✗ = not published, site unchanged.</li>
+        <li>On a red ✗, click the run → the failed step → the last red lines name the file and field to fix. Fix it and commit again.</li>
+      </ol>
+
+      <h3>Still seeing the old text?</h3>
+      <p>
+        That's your browser cache, not the site. Hard-refresh with <strong>Ctrl</strong>+<strong>Shift</strong>+<strong>R</strong>
+        (<strong>⌘</strong>+<strong>Shift</strong>+<strong>R</strong> on Mac), or open it in a private window.
+      </p>
+
+      <h3>Undo an edit</h3>
+      <ol>
+        <li><strong>Commits</strong> list → click the commit you regret.</li>
+        <li><strong>Revert</strong> → confirm.</li>
+        <li>The previous wording redeploys on its own in about a minute.</li>
+      </ol>
+      <p>Nothing is ever lost — every version of every sentence is in the history.</p>
+
+      <!-- ============================================================ 10 -->
+      <h2><span class="num">10</span>One-minute summary</h2>
+
+      <div class="panel panel--answer">
+        <ul>
+          <li>Words live in <code>src/content/</code>. Edit them on github.com and commit to <code>main</code>.</li>
+          <li>Publishing is automatic. Roughly one minute. No commands to run.</li>
+          <li>Change words, never field names, indentation or punctuation structure.</li>
+          <li>A bad edit cannot break the live site — it just refuses to publish.</li>
+          <li>New project = new <code>.md</code> file copied from <code>_template.md</code>.</li>
+          <li>New resume PDF is the only task that needs a laptop.</li>
+          <li>Hard-refresh before believing the site didn't update.</li>
+        </ul>
+      </div>
+
+      <hr />
+      <footer>
+        Repo: github.com/khushi235/khushi235.github.io · Live: khushi235.github.io ·
+        Full reference: <code>README.md</code> in the repo.
+      </footer>
+    </main>
+  </body>
+</html>
