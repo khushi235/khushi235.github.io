@@ -1,82 +1,60 @@
 ---
-title: Marketplace Customer Analytics
-tagline: Customer Intelligence on 100K+ Transactions
+title: RoamEase Travel Portal
+tagline: Personalized travel recommendations and insights
 description: >-
-  An end-to-end customer analytics system that answers the three questions a
-  marketplace asks every month: where revenue actually comes from, which
-  customers are worth keeping, and who is about to leave.
+  A full-stack travel recommendation platform that centralizes trip planning,
+  personalized travel insights and analytics-driven improvements to the travel
+  experience.
 featured: true
 order: 1
-year: 2026
+year: 2024
 status: shipped
 theme: meadow
 technologies:
-  - SQL
-  - Python
-  - Pandas
-  - Power BI
-  - Excel
-  - RFM Segmentation
-  - Cohort Analysis
+  - React.js
+  - Node.js
+  - Express.js
+  - PostgreSQL
+  - REST APIs
 problem: >-
-  The business had plenty of data and almost no answers. Revenue reporting was a
-  monthly Excel file rebuilt by hand, "top customers" meant whoever spent the most
-  last month, and nobody could say whether a customer who bought in January was
-  still around in June. Marketing, finance and ops each had their own number for
-  the same KPI.
+  Travelers needed a more centralized way to discover relevant destinations and
+  plan trips, while product teams needed visibility into how people used the
+  platform.
 approach: >-
-  Clean and deduplicate in SQL where the data lives, then use Python for the logic
-  SQL is clumsy at — quantile RFM scoring, cohort pivots and charting. One agreed
-  definition per metric lives in a single file that both the SQL model and the
-  Python layer read, and the curated tables feed a Power BI report the commercial
-  team opens themselves.
+  Built a full-stack travel recommendation platform with REST APIs, PostgreSQL
+  and analytics workflows that connect personalized recommendations with trip
+  planning and user-interaction data.
 architecture:
-  - SQL staging models that clean and deduplicate raw orders into one row per customer.
-  - RFM scoring on quintiles rather than fixed thresholds, so segments stay stable as the business grows.
-  - Monthly signup cohorts tracked for retention and revenue over a twelve-month window.
-  - A single KPI layer — revenue, AOV, conversion, repeat rate and margin — shared by SQL and Python.
-  - Curated output tables consumed by a four-page Power BI dashboard and an Excel export for finance.
+  - React.js interface for trip planning and destination discovery.
+  - Node.js and Express.js services for application workflows and REST APIs.
+  - PostgreSQL data layer for travel, user and interaction data.
+  - Recommendation workflows that surface relevant destinations and trip options.
+  - Analytics dashboards that expose user behavior and travel trends.
 decisions:
-  - title: RFM instead of clustering
+  - title: Recommendations connected to planning
     detail: >-
-      K-means gives segments nobody can name. RFM gives eight segments a marketing
-      manager understands on day one, and it reproduces month over month. K-means
-      was run as a sanity check and broadly agreed — but RFM is what shipped,
-      because it gets used.
-  - title: Quintile scoring, not fixed thresholds
+      Personalized destination suggestions are part of the trip-planning flow,
+      making recommendations useful at the moment travelers need them.
+  - title: Analytics as a product feedback loop
     detail: >-
-      Hard-coded cut-offs break the moment the business grows. Ranking customers
-      into quintiles keeps the segments comparable across time.
-  - title: Heavy lifting in SQL, analysis in Python
-    detail: >-
-      Joins, dedupe and aggregation run where the data lives, which keeps the
-      Python step small and fast enough to iterate on.
-  - title: One KPI definition, in one file
-    detail: >-
-      The KPI module and the SQL model share the same logic, which is what ended
-      the argument about whose revenue number was right.
+      User behavior and travel trends are surfaced through dashboards so the
+      platform can improve from real interaction data.
 outcomes:
-  - value: 100K+
-    label: Transactions analysed
-  - value: 60%
-    label: Of revenue traced to 18% of customers
-  - value: 3×
-    label: Better month-6 retention for fast second orders
-  - value: 40%
-    label: Less recurring reporting effort
-links:
-  github: https://github.com/khushi235/marketplace-customer-analytics
+  - value: 30%
+    label: Increase in user engagement
+  - value: Full stack
+    label: Travel recommendation platform
+  - value: REST
+    label: API-driven application workflows
+  - value: Centralized
+    label: Trip planning and travel insights
+links: {}
 ---
 
-The interesting finding was not the long tail — every marketplace has one. It was that
-the **At Risk** segment held roughly $180K of historical spend and was receiving exactly
-the same email as everyone else. Naming that group was worth more than any model in the
-repository.
+RoamEase combines trip planning, destination discovery and analytics in one
+full-stack platform. The recommendation and user-interaction workflows help
+travelers find relevant options while giving the product team a clearer view of
+travel behavior and trends.
 
-The second finding was about timing. Cohorts that reached a second order inside 45 days
-retained about three times better at month six. That turns a vague "improve retention"
-goal into a specific, testable one: *get the second order inside six weeks*.
-
-What I would add next is product affinity — the segmentation is behavioural only, and a
-product-first cohort view would probably explain more of the variance than another
-scoring tweak.
+The project demonstrates the practical connection between a React.js interface,
+Node.js and Express.js services, PostgreSQL data, REST APIs and analytics.

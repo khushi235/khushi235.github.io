@@ -1,23 +1,23 @@
 ---
 company: Estatic Infotech Pvt. Ltd.
-role: Data Analyst
+role: Data Automation Engineer
 location: Ahmedabad, GJ
 start: 2020-07
 end: 2022-07
 order: 3
 summary: >-
-  First analytics role: cleaning, reconciling and reporting on the business
-  datasets the leadership team ran on.
+  Built Python data pipelines and automated reporting workflows for reliable
+  business analysis across multiple source systems.
 technologies:
+  - Python
   - SQL
-  - Excel
+  - REST APIs
   - Tableau
   - Power BI
-  - Data Cleansing
-  - KPI Design
+  - Data Validation
 highlights:
-  - Analysed and reconciled business datasets in Excel, performing data cleansing, validation and quality checks to identify anomalies, trends and performance gaps, improving reporting accuracy by 40%.
-  - Standardised data preparation, validation and recurring reporting workflows in Tableau, reducing manual analysis and reporting effort by 30% while improving consistency and turnaround time.
-  - Used SQL to build recurring analyses and reports, establish business KPIs and surface performance gaps that drove targeted process improvements and better operational efficiency.
-  - Built Power BI dashboards to track key KPIs, cutting manual reporting time by 40% and giving management clearer visibility into performance trends.
+  - Implemented a communication widget integrating Twilio Voice and Messaging APIs, connecting user actions to real-time calling and messaging workflows within client applications, enhancing support coverage by 50%.
+  - Built Python data pipelines with validation logic that automated cleansing, reconciliation and transformation, improving reporting reliability.
+  - Automated SQL-to-Power BI reporting workflows, reducing recurring manual reporting effort by 30%.
+  - Resolved data and reporting issues across multiple source systems, transformations and dashboards, restoring reliable business reporting.
 ---

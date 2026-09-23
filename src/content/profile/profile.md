@@ -1,14 +1,14 @@
 ---
 name: Khushi Shukla
-role: Data & AI Analyst
-headline: I turn messy enterprise data into numbers a business will actually make decisions on.
+role: AI Integration Engineer
+headline: I build AI-enabled integrations and data workflows that turn complex business data into reliable systems.
 summary: >-
-  Khushi Shukla is a Senior Data & AI Analyst in New York building data-quality
-  frameworks, forecasting models and BI that teams trust. MS in Computer Science
-  from New York Institute of Technology.
+  Khushi Shukla is an AI Integration Engineer in New York building Python
+  workflows, data pipelines and AI-enabled systems that turn unstructured data
+  into reliable, production-ready datasets.
 location: New York, NY
 email: shuklakhushim2@gmail.com
-availability: Open to data & analytics roles
+availability: Open to AI integration and data engineering roles
 resume:
   href: /resume/Khushi-Shukla-Resume.pdf
   label: Resume
@@ -21,30 +21,29 @@ socials:
     href: https://www.linkedin.com/in/khushi-shukla-ba2310212/
     handle: in/khushi-shukla
 metrics:
-  - value: 40%
-    label: Fewer analytical errors after data-quality automation
-  - value: 3×
-    label: Faster decisions across client data environments
-  - value: 99%
-    label: Email deliverability after validation and standardisation
+  - value: 2×
+    label: Faster processing through AI integration workflows
+  - value: 50%
+    label: Less manual intervention in automated operations
+  - value: 30%
+    label: Lower processing latency across production workflows
   - value: 7,000+
-    label: Students supported by the datasets I maintained
+    label: Students supported by technology workflows
 ---
 
-I'm a Senior Data & AI Analyst at R2D2 Consulting, where I build the layer other teams
-rely on without thinking about it — **data-quality frameworks, automated pipelines and
-the dashboards people open instead of asking for a report**.
+I'm an AI Integration Engineer at R2D2 Consulting, where I build end-to-end workflows
+that automate data ingestion, transformation, validation and downstream processing.
+My work turns unstructured business data into structured, production-ready datasets
+for CRM, analytics and operations.
 
-Before that I finished a Master's in Computer Science at NYIT with distinction while
-running operations and reporting for a 7,000-student campus, and spent two years in
-Ahmedabad learning the unglamorous half of this job: *cleaning, reconciling and
-validating* the datasets everyone else was about to draw conclusions from.
+Before that I completed a Master's in Computer Science at NYIT with distinction while
+designing technology workflows for a 7,000-student campus. Earlier, I built Python
+data pipelines and automated SQL-to-Power BI reporting workflows at Estatic Infotech.
 
-Most of my work follows the same shape. Find a number the business does not trust,
-figure out why, then fix it at the source rather than in the report. Sometimes that means
-a forecasting model. More often it means one agreed definition of a KPI and a rule that
-refuses bad rows at ingestion. Knowing which is the actual job.
+I work across Python, SQL, REST APIs, generative AI, prompt engineering, data
+validation, workflow automation and business intelligence. I care about reliable
+integrations, observable production systems and practical improvements that teams can
+measure.
 
-Away from the keyboard I'm almost certainly with a dog — preferably a golden retriever,
-who will happily fetch the same ball four hundred times and never once ask whether the
-sample size is adequate.
+My projects include a full-stack travel recommendation platform and a placement
+management system that centralizes student, company and admin workflows.

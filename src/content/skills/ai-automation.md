@@ -1,16 +1,20 @@
 ---
-label: AI, Automation & APIs
+label: APIs, AI & Automation
 order: 3
-note: Used where rules genuinely fall short, and nowhere else.
+note: Integrations and automation that connect business systems and intelligent workflows.
 items:
-  - name: Generative AI
-    note: Schema mapping and unstructured extraction, always behind a validator.
-    core: true
+  - Generative AI
+  - AI Agents
+  - LLM Applications
+  - LLM API Integration
   - Prompt Engineering
+  - AI-powered Automation
   - NLP
-  - AI-powered automation
-  - name: Power Automate
-    note: Removed roughly 100+ hours of manual work a year at NYIT.
+  - name: REST APIs
     core: true
-  - REST APIs
+  - API Integration
+  - Workflow Automation
+  - Power Automate
+  - Microsoft Dataverse
+  - Microsoft Lists
 ---

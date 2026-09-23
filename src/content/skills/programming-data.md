@@ -1,19 +1,19 @@
 ---
 label: Programming & Data
 order: 1
-note: Where the analysis actually happens — query it, shape it, check it.
+note: The languages, databases and frameworks used to build reliable data systems.
 items:
-  - name: SQL
-    note: PostgreSQL, SQL Server and MySQL. The first place I go for anything at scale.
+  - name: React.js
     core: true
+  - Next.js
+  - Bootstrap
+  - Node.js
+  - Express.js
   - name: Python
-    note: Pandas and NumPy for analysis, scikit-learn for modelling.
     core: true
-  - Pandas
-  - NumPy
-  - scikit-learn
-  - name: Excel
-    note: Still the fastest way to settle an argument about a number.
-    core: true
-  - Power Query
+  - SQL
+  - PostgreSQL
+  - MySQL
+  - SQL Server
+  - MongoDB
 ---
